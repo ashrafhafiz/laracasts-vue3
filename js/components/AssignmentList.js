@@ -5,11 +5,15 @@ export default {
   components: { Assignment, AssignmentTags },
 
   template: `
-        <section v-show="assignments.length">
-            <h2 class="font-bold mb-2">
-                {{ title }}
-                <span>({{ assignments.length }})</span>
-            </h2>
+        <section class="w-80 bg-gray-700 p-4 border border-gray-600 rounded-lg" v-show="assignments.length">
+            <div class="flex justify-between items-start">
+              <h2 class="font-bold mb-2">
+                  {{ title }}
+                  <span>({{ assignments.length }})</span>
+              </h2>
+
+              <button v-show="canHide" @click="$emit('hide')">&times;</button>
+            </div>
 
             <assignment-tags :initial-tags="assignments.map((assignment) => assignment.tag)" v-model:current-tag="currentTag"/>
 
@@ -21,12 +25,14 @@ export default {
                 >
                 </assignment>
             </ul>
-        </section>
+            <slot />
+            </section>
     `,
 
   props: {
     assignments: Array,
     title: String,
+    canHide: { type: Boolean, default: false },
   },
 
   data() {
